@@ -3,62 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tausendsassa – Das 1000-Aufgaben-Spiel</title>
+<title>Tausendsassa – Das 1000-Aufgaben-Teamspiel</title>
 <style>
   #ts-app-root {
     --p: #2563eb; --pd: #1d4ed8; --s: #f59e0b; --ok: #10b981; --no: #ef4444; --bg: #f8fafc; --txt: #1e293b;
-    box-sizing: border-box;
-    font-family: system-ui, -apple-system, sans-serif;
-    color: var(--txt);
-    max-width: 820px;
-    width: 100%;
-    margin: 20px auto;
-    background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    padding: 22px;
-    display: block;
-    clear: both;
-    position: relative;
+    box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; color: var(--txt);
+    max-width: 820px; width: 100%; margin: 20px auto; background: #fff; border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08); padding: 22px; display: block; clear: both; position: relative;
   }
   #ts-app-root *, #ts-app-root *::before, #ts-app-root *::after { box-sizing: border-box; }
-  #ts-app-root .ts-title-main {
-    text-align: center;
-    color: var(--p);
-    margin: 0 0 4px;
-    font-size: clamp(1.45rem, 6vw, 2.25rem);
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-    line-height: 1.2;
-  }
+  #ts-app-root .ts-title-main { text-align: center; color: var(--p); margin: 0 0 4px; font-size: clamp(1.45rem, 6vw, 2.25rem); font-weight: 800; letter-spacing: 0.04em; white-space: nowrap; }
   #ts-app-root .ts-sub { text-align: center; color: #64748b; margin-bottom: 20px; font-size: 0.95rem; }
   #ts-app-root .ts-scr { display: none; }
   #ts-app-root .ts-scr.act { display: block; }
-  #ts-app-root .ts-fg { margin-bottom: 16px; }
-  #ts-app-root label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--txt); }
-  #ts-app-root input, #ts-app-root select {
-    width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px;
-    font-size: 1rem; margin-bottom: 8px; background: #fff; color: var(--txt);
-  }
-  #ts-app-root .ts-btn {
-    background: var(--p); color: #fff; border: none; padding: 11px 18px;
-    border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer;
-    display: inline-block; text-align: center;
-  }
+  #ts-app-root .ts-fg { margin-bottom: 14px; }
+  #ts-app-root .ts-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  #ts-app-root label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--txt); font-size: 0.92rem; }
+  #ts-app-root input, #ts-app-root select { width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; margin-bottom: 8px; background: #fff; color: var(--txt); }
+  #ts-app-root .ts-btn { background: var(--p); color: #fff; border: none; padding: 11px 18px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; display: inline-block; text-align: center; }
   #ts-app-root .ts-btn:hover { background: var(--pd); }
+  #ts-app-root .ts-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   #ts-app-root .ts-btn-ok { background: var(--ok); }
   #ts-app-root .ts-btn-no { background: var(--no); }
   #ts-app-root .ts-btn-sec { background: #e2e8f0; color: var(--txt); }
   #ts-app-root .ts-btn-warn { background: var(--s); color: #fff; }
   #ts-app-root .ts-blk { width: 100%; margin-top: 8px; }
-  #ts-app-root .ts-bar {
-    display: flex; justify-content: space-between; align-items: center;
-    background: #f1f5f9; padding: 10px 14px; border-radius: 8px;
-    margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
-  }
+  #ts-app-root .ts-bar { display: flex; justify-content: space-between; align-items: center; background: #f1f5f9; padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; font-size: 0.92rem; }
   #ts-app-root .ts-bdg { background: var(--p); color: #fff; padding: 4px 9px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; }
-  #ts-app-root .ts-priv { text-align: center; padding: 30px 15px; background: #eff6ff; border: 2px dashed var(--p); border-radius: 12px; margin: 15px 0; }
+  #ts-app-root .ts-priv { text-align: center; padding: 22px 16px; background: #eff6ff; border: 2px dashed var(--p); border-radius: 12px; margin: 15px 0; }
   #ts-app-root .ts-card { border: 2px solid #e2e8f0; border-radius: 12px; padding: 18px; background: #fff; }
   #ts-app-root .ts-t-title { font-size: 1.3rem; font-weight: 700; color: var(--pd); margin: 8px 0; }
   #ts-app-root .ts-t-desc { font-size: 1.1rem; line-height: 1.5; margin-bottom: 16px; }
@@ -66,103 +38,169 @@
   #ts-app-root .ts-tmr.low { color: var(--no); border-color: var(--no); }
   #ts-app-root .ts-hint { background: #fffbeb; border-left: 4px solid var(--s); padding: 10px; margin-bottom: 12px; display: none; }
   #ts-app-root .ts-sol { background: #ecfdf5; border-left: 4px solid var(--ok); padding: 10px; margin-bottom: 16px; }
-  #ts-app-root table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 15px; }
-  #ts-app-root th, #ts-app-root td { border: 1px solid #e2e8f0; padding: 6px; text-align: center; }
-  #ts-app-root td:first-child, #ts-app-root th:first-child { text-align: left; font-weight: 600; }
-  #ts-app-root .ts-done { background: #d1fae5; color: #065f46; font-weight: bold; }
+  #ts-app-root .ts-prog-wrap { background: #e2e8f0; border-radius: 999px; height: 14px; overflow: hidden; margin: 8px 0 14px; }
+  #ts-app-root .ts-prog-bar { background: var(--ok); height: 100%; width: 0%; transition: width 0.35s ease; }
+  #ts-app-root .ts-cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 8px; margin-top: 14px; }
+  #ts-app-root .ts-cat-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+  #ts-app-root .ts-cat-box.done { background: #d1fae5; border-color: #10b981; color: #065f46; font-weight: 700; }
+  #ts-app-root .ts-title-pill { display: inline-block; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 6px 12px; border-radius: 20px; font-size: 0.88rem; margin: 4px; font-weight: 600; }
 </style>
 </head>
 <body>
 <div id="ts-app-root">
   <div class="ts-title-main">TAUSENDSASSA</div>
-  <div class="ts-sub">8 Kategorien &bull; Der ganze Mensch</div>
-
+  <div class="ts-sub">8 Kategorien &bull; Gemeinsam als Team</div>
+  <!-- 1. SETUP SCREEN -->
   <div id="ts-s-setup" class="ts-scr act">
     <div class="ts-fg">
-      <label>Mitspieler eintragen (mindestens 2 Personen):</label>
+      <label>Team-Mitglieder eintragen (mindestens 2 Personen):</label>
       <div id="ts-p-inputs">
-        <input type="text" class="ts-p-in" placeholder="Name Spieler 1...">
-        <input type="text" class="ts-p-in" placeholder="Name Spieler 2...">
+        <input type="text" class="ts-p-in" placeholder="Name Mitglied 1...">
+        <input type="text" class="ts-p-in" placeholder="Name Mitglied 2...">
       </div>
-      <button type="button" class="ts-btn ts-btn-sec" onclick="tsAddField()">+ Weiteren Spieler hinzufügen</button>
+      <button type="button" class="ts-btn ts-btn-sec" onclick="tsAddField()">+ Weiteres Team-Mitglied</button>
     </div>
-    <div class="ts-fg">
-      <label>Schwierigkeitsgrad:</label>
-      <select id="ts-diff">
-        <option value="alle">Gemischt (Alle Stufen)</option>
-        <option value="leicht">Leicht</option>
-        <option value="mittel">Mittel</option>
-        <option value="knacknuss">Knacknuss</option>
-      </select>
-    </div>
-    <div class="ts-fg">
-      <label>Gesamt-Spieldauer:</label>
-      <select id="ts-dur">
-        <option value="0">Unbegrenzt (Bis jemand alle 8 Kategorien erfüllt)</option>
-        <option value="15">15 Minuten</option>
-        <option value="30" selected>30 Minuten</option>
-        <option value="45">45 Minuten</option>
-        <option value="60">60 Minuten</option>
-      </select>
+
+    <div class="ts-grid2">
+      <div class="ts-fg">
+        <label>Team-Ziel pro Kategorie:</label>
+        <select id="ts-goal">
+          <option value="2">2 Punkte pro Kategorie (16 Gesamt)</option>
+          <option value="3" selected>3 Punkte pro Kategorie (24 Gesamt)</option>
+          <option value="4">4 Punkte pro Kategorie (32 Gesamt)</option>
+          <option value="5">5 Punkte pro Kategorie (40 Gesamt)</option>
+        </select>
+      </div>
+      <div class="ts-fg">
+        <label>Gesamt-Spieldauer:</label>
+        <select id="ts-dur">
+          <option value="0">Ohne Zeitlimit (Bis 100 % erreicht sind)</option>
+          <option value="15">15 Minuten</option>
+          <option value="30" selected>30 Minuten</option>
+          <option value="45">45 Minuten</option>
+          <option value="60">60 Minuten</option>
+        </select>
+      </div>
+      <div class="ts-fg">
+        <label>Schwierigkeitsgrad:</label>
+        <select id="ts-diff">
+          <option value="alle" selected>Gemischt (Alle Stufen)</option>
+          <option value="leicht">Leicht</option>
+          <option value="mittel">Mittel</option>
+          <option value="knacknuss">Knacknuss</option>
+        </select>
+      </div>
+      <div class="ts-fg">
+        <label>Aufgaben überspringen (Veto):</label>
+        <select id="ts-skips">
+          <option value="0">Nicht erlaubt (0x)</option>
+          <option value="3">3x pro Spiel</option>
+          <option value="5" selected>5x pro Spiel</option>
+          <option value="10">10x pro Spiel</option>
+          <option value="999">Unbegrenzt</option>
+        </select>
+      </div>
+      <div class="ts-fg">
+        <label>Team-Joker (Gemeinsam lösen):</label>
+        <select id="ts-jokers">
+          <option value="0">Keine Joker (0x)</option>
+          <option value="1">1x pro Spiel</option>
+          <option value="2" selected>2x pro Spiel</option>
+          <option value="3">3x pro Spiel</option>
+          <option value="5">5x pro Spiel</option>
+        </select>
+      </div>
     </div>
     <div id="ts-status" style="font-weight:600; margin-bottom:12px; color:#64748b;">Initialisiere...</div>
-    <button type="button" class="ts-btn ts-btn-ok ts-blk" onclick="tsStart()">Spiel starten</button>
+    <button type="button" class="ts-btn ts-btn-ok ts-blk" onclick="tsStart()">Team-Mission starten</button>
   </div>
-
+  <!-- 2. TEAM-BERATUNG & ROLLENWAHL -->
   <div id="ts-s-priv" class="ts-scr">
     <div class="ts-bar">
-      <div>Am Zug: <strong id="ts-p-act"></strong> (Serie: <span id="ts-p-str">0</span>/3)</div>
+      <div>Team-Fortschritt: <strong id="ts-team-pct">0%</strong> (<span id="ts-team-pts">0/24</span>)</div>
       <div>Restzeit: <strong id="ts-g-tmr">--:--</strong></div>
     </div>
+    <div class="ts-prog-wrap"><div class="ts-prog-bar" id="ts-prog-bar"></div></div>
+
     <div class="ts-priv">
-      <div>Gerät bitte weitergeben an Vorleser/in:</div>
-      <div id="ts-p-rdr" style="color:var(--p); margin:8px 0; font-size:1.5rem; font-weight:700;"></div>
-      <p><strong id="ts-p-hide"></strong> darf jetzt nicht auf den Bildschirm schauen!</p>
-      <div id="ts-j-msg" style="display:none; background:#fef3c7; color:#92400e; padding:8px; border-radius:6px; margin-bottom:12px; font-weight:bold;"></div>
-      <button type="button" class="ts-btn" onclick="tsReveal()">Aufgabe aufdecken</button>
+      <div style="font-size:0.9rem; color:#475569; margin-bottom:6px;">Nächste Kategorie wurde gezogen:</div>
+      <div id="ts-next-cat" style="color:var(--p); font-size:1.5rem; font-weight:800; margin-bottom:4px;"></div>
+      <div id="ts-next-diff" style="font-size:0.9rem; font-weight:600; color:#64748b; margin-bottom:12px;"></div>
+      <div id="ts-bonus-hint" style="display:none; background:#fef3c7; color:#92400e; padding:8px; border-radius:6px; margin-bottom:12px; font-size:0.9rem; font-weight:600;"></div>
+
+      <p style="margin:0 0 12px; font-size:0.95rem;">Beratet euch kurz: <strong>Wer übernimmt diese Aufgabe?</strong><br><span style="font-size:0.82rem; color:#64748b;">(Fair-Play: Niemand darf zweimal direkt hintereinander antreten)</span></p>
+
+      <div class="ts-grid2" style="text-align:left; max-width:520px; margin:0 auto 14px;">
+        <div>
+          <label for="ts-sel-act">Ausführende Person:</label>
+          <select id="ts-sel-act" onchange="tsSyncReader()"></select>
+        </div>
+        <div>
+          <label for="ts-sel-rdr">Vorleser/in (darf lesen):</label>
+          <select id="ts-sel-rdr"></select>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <button type="button" class="ts-btn" onclick="tsReveal()">Aufgabe an Vorleser/in zeigen</button>
+        <button type="button" class="ts-btn ts-btn-sec" id="ts-btn-skip-pre" onclick="tsSkipTask()">⏭ Überspringen (<span id="ts-skip-cnt-1">5</span>)</button>
+      </div>
     </div>
+
     <div id="ts-sb-1"></div>
   </div>
 
+  <!-- 3. AUFGABEN-KARTE -->
   <div id="ts-s-task" class="ts-scr">
     <div class="ts-bar">
-      <div>Spieler: <strong id="ts-t-act"></strong> | Vorleser: <strong id="ts-t-rdr"></strong></div>
-      <div><span class="ts-bdg" id="ts-t-cat"></span> <span class="ts-bdg" id="ts-t-joker" style="background:var(--s); display:none;">JOKER</span></div>
+      <div>Aktiv: <strong id="ts-t-act"></strong> | Vorleser: <strong id="ts-t-rdr"></strong></div>
+      <div><span class="ts-bdg" id="ts-t-cat"></span> <span class="ts-bdg" id="ts-t-joker" style="background:var(--s); display:none;">TEAM-JOKER AKTIV</span></div>
     </div>
+
     <div class="ts-card">
-      <div style="font-size:0.85rem; color:#64748b;" id="ts-t-meta"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+        <span style="font-size:0.85rem; color:#64748b;" id="ts-t-meta"></span>
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="ts-btn ts-btn-warn" id="ts-btn-use-joker" style="padding:6px 12px; font-size:0.85rem;" onclick="tsUseJoker()">★ Team-Joker (<span id="ts-joker-cnt">2</span>)</button>
+          <button type="button" class="ts-btn ts-btn-sec" id="ts-btn-skip-task" style="padding:6px 12px; font-size:0.85rem;" onclick="tsSkipTask()">⏭ Überspringen (<span id="ts-skip-cnt-2">5</span>)</button>
+        </div>
+      </div>
+
       <div class="ts-t-title" id="ts-t-tit"></div>
       <div class="ts-t-desc" id="ts-t-dsc"></div>
       <div class="ts-tmr" id="ts-t-tmr">00:45</div>
+
       <div style="text-align:center; margin-bottom:12px;">
         <button type="button" class="ts-btn ts-btn-sec" id="ts-b-tmr" onclick="tsTglTmr()">Timer starten</button>
         <button type="button" class="ts-btn ts-btn-warn" id="ts-b-hnt" style="display:none;" onclick="tsShowHnt()">Halbzeit-Empfehlung</button>
       </div>
+
       <div class="ts-hint" id="ts-t-hnt"></div>
       <div class="ts-sol"><strong>Lösung / Kriterium:</strong> <span id="ts-t-sol"></span></div>
+
       <div style="display:flex; gap:10px;">
-        <button type="button" class="ts-btn ts-btn-ok" style="flex:1;" onclick="tsDone(true)">✔ Erfüllt</button>
-        <button type="button" class="ts-btn ts-btn-no" style="flex:1;" onclick="tsDone(false)">✖ Nicht erfüllt</button>
+        <button type="button" class="ts-btn ts-btn-ok" style="flex:1;" onclick="tsDone(true)">✔ Im Team erfüllt</button>
+        <button type="button" class="ts-btn ts-btn-no" style="flex:1;" onclick="tsDone(false)">✖ Leider nicht geschafft</button>
       </div>
     </div>
   </div>
 
+  <!-- 4. TEAM-AUSWERTUNG -->
   <div id="ts-s-end" class="ts-scr">
-    <div style="text-align:center; color:var(--ok); font-size:1.5rem; font-weight:700; margin-bottom:10px;">Spiel beendet!</div>
-    <p id="ts-e-rsn" style="text-align:center;"></p>
-    <div id="ts-e-win" style="background:#ecfdf5; border:2px solid var(--ok); padding:15px; border-radius:10px; text-align:center; font-weight:bold; font-size:1.2rem;"></div>
+    <div style="text-align:center; color:var(--p); font-size:1.6rem; font-weight:800; margin-bottom:8px;">Team-Auswertung</div>
+    <p id="ts-e-rsn" style="text-align:center; color:#475569; margin-bottom:14px;"></p>
+    <div id="ts-e-win" style="background:#ecfdf5; border:2px solid var(--ok); color:#065f46; padding:18px; border-radius:12px; text-align:center; font-weight:800; font-size:1.25rem; margin-bottom:16px;"></div>
+    <div id="ts-e-titles" style="text-align:center; margin-bottom:16px;"></div>
     <div id="ts-sb-2"></div>
-    <button type="button" class="ts-btn ts-blk" onclick="location.reload()">Neues Spiel</button>
+    <button type="button" class="ts-btn ts-blk" style="margin-top:16px;" onclick="location.reload()">Neue Team-Mission</button>
   </div>
 </div>
-
 <script>
 (function() {
   const KATS = [
     "Geist & Wissen", "Geschicklichkeit", "Körper & Balance", "Ausdruck & Kreativität",
     "Sinne & Wahrnehmung", "Alltag & Life-Skills", "Soziales & Kommunikation", "Chaos & Mutproben"
   ];
-
   const RAW_DB = [
   [0,"leicht",30,"Zahlenreihe","Welche Zahl folgt: 2, 6, 12, 20, 30, ...?","Schau auf die Abstände zwischen den Zahlen.","42 (+4, +6, +8, +10, +12)."],
   [0,"leicht",20,"Roter Planet","Welcher Planet heisst wegen seines Staubs 'Roter Planet'?","Der vierte Planet von der Sonne.","Mars."],
@@ -1148,33 +1186,49 @@
   [7,"mittel",45,"Märchen-Rap","Rappe die Geschichte von 'Rotkäppchen und dem bösen Wolf' 30 Sekunden lang im Takt, während deine Mitspieler einen einfachen Beat auf den Tisch klopfen.","Nutze einfache Paarreime wie 'Wald / kalt' oder 'Haus / raus'.","30 Sekunden im Rhythmus gerappt."],
   [7,"leicht",30,"Statue-der-Freude","Nimm sofort eine völlig übertriebene Jubel-Pose ein, als hättest du gerade im Lotto gewonnen, und halte sie 15 Sekunden lang wie eingefroren.","Reisse die Arme hoch und strahle über das ganze Gesicht.","15 Sekunden regungslos gehalten."],
   [7,"mittel",45,"Koch-Katastrophe","Spiele 30 Sekunden lang einen hektischen Fernsehkoch, dem beim Zubereiten eines unsichtbaren Pfannkuchens alles schiefgeht (Pfannkuchen klebt an der Decke, Feuer im Topf).","Kommentiere deine Pannen hektisch weiter, als wäre nichts passiert.","30 Sekunden unterhaltsam geschauspielert."],
-  [7,"knacknuss",60,"Tausendsassa-Finale","Stehe auf, verbeuge dich feierlich vor der Gruppe und halte eine 30-sekündige, würdevolle Siegesrede darüber, warum der Mensch alle 8 Talente braucht, um ein echter Tausendsassa zu sein!","Sprich ruhig, stolz und mit einem Augenzwinkern.","30 Sekunden souverän und feierlich beendet."]
-  ];
+  [7,"knacknuss",60,"Tausendsassa-Finale","Stehe auf, verbeuge dich feierlich vor der Gruppe und halte eine 30-sekündige, würdevolle Siegesrede darüber, warum der Mensch alle 8 Talente braucht, um ein echter Tausendsassa zu sein!","Sprich ruhig, stolz und mit einem Augenzwinkern.","30 Sekunden souverän und feierlich beendet."],
+  [0,"leicht",25,"Tier-Rekord-Ozean","Welches ist das grösste und schwerste Tier, das jemals auf der Erde gelebt hat?","Es lebt im Meer und ist ein Säugetier.","Der Blauwal."],
+  [0,"mittel",35,"Wort-Akrobatik-Umlaut","Nenne innerhalb von 20 Sekunden 6 deutsche Wörter, die mit dem Buchstaben 'Ü' beginnen.","Denke an Überraschung, Übung oder Übermut.","6 gültige Wörter mit Ü."],
+  [1,"leicht",30,"Münz-Kante-Roll","Lasse eine Münze hochkant zwischen den Fingern einer Hand vom Zeigefinger bis zum kleinen Finger wandern.","Übe die Kippbewegung langsam über der Tischplatte.","Münze wandert über alle 4 Finger."],
+  [1,"mittel",45,"Papier-Ring-Wurf","Forme aus einem Streifen Papier einen Ring und wirf ihn aus 1,5 Metern Entfernung über eine aufgestellte Flasche (5 Versuche).","Wirf den Ring flach wie ein Frisbee.","Mindestens ein Treffer über den Flaschenhals."],
+  [2,"leicht",30,"Einbein-Uhr-Drehung","Stehe auf einem Bein und drehe dich mit kleinen Hüpfern einmal komplett um 360 Grad auf der Stelle, ohne abzusetzen.","Arme seitlich als Balancierstange nutzen.","360-Grad-Drehung ohne Absetzen geschafft."],
+  [2,"mittel",45,"Wandsitz-Hände-Hoch","Gehe an der Wand in den 90-Grad-Wandsitz und strecke beide Arme 30 Sekunden lang senkrecht nach oben an die Wand.","Schultern und Hinterkopf berühren die Wand.","30 Sekunden durchgehalten."],
+  [3,"leicht",30,"Geräusche-Wetter","Imitiere nur mit deiner Stimme und den Händen einen aufziehenden Sturm mit Donner, Wind und Platzregen.","Mit den Händen auf die Oberschenkel trommeln für den Regen.","Alle 3 Wettergeräusche klar erkennbar."],
+  [3,"mittel",45,"Werbung-für-Regenwetter","Halte eine 30-sekündige, begeisterte Werberede dafür, warum ein verregneter Sonntag viel besser ist als Sonnenschein.","Lobe gemütliche Socken, heissen Tee und gute Spiele.","30 Sekunden überzeugend vorgetragen."],
+  [4,"leicht",30,"Geräusch-Material-Mix","Schliesse die Augen. Der Vorleser lässt nacheinander einen Schlüssel, ein Blatt Papier und einen Plastikgegenstand fallen. Erkenne die Reihenfolge.","Achte auf das helle Klirren von Metall.","Alle 3 Gegenstände in der richtigen Reihenfolge erkannt."],
+  [4,"mittel",45,"Wort-Längen-Hören","Der Vorleser nennt 4 Wörter (z. B. 'Elefant', 'Schmetterling', 'Haus', 'Kühlschrank'). Nenne jeweils sofort die exakte Anzahl der Buchstaben (Toleranz +/- 1).","Schreibe das Wort kurz im Geist auf.","Alle 4 Wortlängen richtig eingeschätzt."],
+  [5,"leicht",30,"Küche: Ei-Trennen","Erkläre zwei einfache Alltagsmethoden, wie man beim Backen Eigelb und Eiweiss sauber voneinander trennt.","Über die Eierschalenhälften oder mit einer sauberen Hand/Flasche.","Zwei funktionierende Methoden erklärt."],
+  [5,"mittel",45,"Kopf-Rechnen: Rabatt-Staffel","Ein Pullover kostet 100 Franken/Euro. Zuerst wird er um 20 Prozent reduziert, und auf den reduzierten Preis gibt es nochmals 10 Prozent Extra-Rabatt. Was kostet er am Ende?","Nicht 70 – rechne 10 Prozent von 80!","72 Franken/Euro (80 minus 8)."],
+  [6,"leicht",30,"Team-Lob-Blitz","Nenne zu jedem Mitspieler am Tisch ein Wort, das beschreibt, was er oder sie besonders gut in euer Team einbringt.","Schau die Person freundlich an.","Jedes Teammitglied wertschätzend gewürdigt."],
+  [6,"mittel",45,"Gemeinsame-Geschichte-A-Z","Erzählt im ganzen Team reihum eine Geschichte: Jeder sagt einen Satz, der mit dem nächsten Buchstaben des Alphabets beginnt (A bis H).","Haltet die Sätze kurz und witzig.","8 zusammenhängende Sätze im Team gebildet."],
+  [7,"knacknuss",60,"Das-1000ste-Jubiläum","Feiere die 1000. Aufgabe im Spiel! Stehe auf, halte eine 20-sekündige Dankesrede an die Gruppe wie bei einer Oscar-Verleihung und klatscht euch alle ab.","Bedanke dich bei deinen Eltern, dem Team und dem Zufallsgenerator.","Mit Applaus und High-Five im Team gefeiert."]
 
-  const DB = RAW_DB.map((r, i) => ({
+  ];
+   const DB = RAW_DB.map((r, i) => ({
     id: i + 1,
-    kategorie: KATS[r[0]],
-    schwierigkeit: r[1],
-    zeit: r[2],
-    titel: r[3],
-    aufgabe: r[4],
-    tipp: r[5],
-    loesung: r[6]
+    kategorie: KATS.at(r.at(0)),
+    schwierigkeit: r.at(1),
+    zeit: r.at(2),
+    titel: r.at(3),
+    aufgabe: r.at(4),
+    tipp: r.at(5),
+    loesung: r.at(6)
   }));
 
-  let players = [], pIdx = 0, rIdx = 0, streak = 0, used = new Set();
-  let diff = "alle", gSec = 0, gInt = null, finalRnd = false;
-  let task = null, jQual = false, jBonus = false;
-  let tTot = 45, tLeft = 45, tInt = null, tRun = false;
+  let players = [], lastActorIdx = -1, actIdx = 0, rdrIdx = 0, used = new Set();
+  let goalPerCat = 3, skipsLeft = 5, jokersLeft = 2, jokerActive = false;
+  let teamScores = {};
+  let diff = "alle", gSec = 0, gInt = null, timeUp = false;
+  let task = null, tTot = 45, tLeft = 45, tInt = null, tRun = false;
 
-  document.getElementById("ts-status").innerHTML = `<span style="color:var(--ok);">✔ ${DB.length} Aufgaben geladen (alle 8 Kategorien komplett).</span>`;
+  document.getElementById("ts-status").innerHTML = `<span style="color:var(--ok);">✔ ${DB.length} Aufgaben geladen (Koop-Teammodus bereit).</span>`;
 
   window.tsAddField = function() {
     const div = document.getElementById("ts-p-inputs");
     const inp = document.createElement("input");
     inp.type = "text";
     inp.className = "ts-p-in";
-    inp.placeholder = `Name Spieler ${div.children.length + 1}...`;
+    inp.placeholder = `Name Mitglied ${div.children.length + 1}...`;
     div.appendChild(inp);
   };
 
@@ -1185,12 +1239,21 @@
 
   window.tsStart = function() {
     const names = Array.from(document.querySelectorAll("#ts-app-root .ts-p-in")).map(i => i.value.trim()).filter(v => v !== "");
-    if (names.length < 2) { alert("Bitte mindestens 2 Namen eintragen!"); return; }
-    players = names.map(n => {
-      let sc = {}; KATS.forEach(k => sc[k] = 0);
-      return { name: n, scores: sc };
+    if (names.length < 2) { alert("Bitte mindestens 2 Team-Mitglieder eintragen!"); return; }
+
+    players = names.map(n => ({ name: n, solved: 0, byCat: {} }));
+    KATS.forEach(k => {
+      teamScores[k] = 0;
+      players.forEach(p => { p.byCat[k] = 0; });
     });
+
+    goalPerCat = parseInt(document.getElementById("ts-goal").value) || 3;
     diff = document.getElementById("ts-diff").value;
+    skipsLeft = parseInt(document.getElementById("ts-skips").value);
+    jokersLeft = parseInt(document.getElementById("ts-jokers").value);
+    lastActorIdx = -1;
+    timeUp = false;
+
     const m = parseInt(document.getElementById("ts-dur").value);
     if (m > 0) {
       gSec = m * 60;
@@ -1200,79 +1263,126 @@
           document.getElementById("ts-g-tmr").innerText = `${String(Math.floor(gSec/60)).padStart(2,'0')}:${String(gSec%60).padStart(2,'0')}`;
         } else {
           clearInterval(gInt);
-          finalRnd = true;
-          document.getElementById("ts-g-tmr").innerText = "Letzte Runde!";
-          document.getElementById("ts-g-tmr").style.color = "var(--no)";
+          timeUp = true;
+          end("Die vereinbarte Missionszeit ist abgelaufen!");
         }
       }, 1000);
     } else {
       document.getElementById("ts-g-tmr").innerText = "Unbegrenzt";
     }
-    pIdx = 0; streak = 0;
-    nextTurn(false);
+
+    prepareNextTask();
   };
 
-  function getPool(catFilter) {
+  function getPool() {
     let pool = DB.filter(t => !used.has(t.id));
     if (diff !== "alle") {
-      let dp = pool.filter(t => t.schwierigkeit === diff);
+      const dp = pool.filter(t => t.schwierigkeit === diff);
       if (dp.length > 0) pool = dp;
     }
-    if (catFilter) {
-      let cp = pool.filter(t => t.kategorie === catFilter);
+    const openCats = KATS.filter(k => teamScores[k] < goalPerCat);
+    if (openCats.length > 0 && Math.random() < 0.75) {
+      const cp = pool.filter(t => openCats.includes(t.kategorie));
       if (cp.length > 0) pool = cp;
     }
-    if (pool.length === 0) { used.clear(); return getPool(catFilter); }
+    if (pool.length === 0) { used.clear(); return getPool(); }
     return pool;
   }
+  function updateCounters() {
+    const skipTxt = skipsLeft > 500 ? "∞" : skipsLeft;
+    document.getElementById("ts-skip-cnt-1").innerText = skipTxt;
+    document.getElementById("ts-skip-cnt-2").innerText = skipTxt;
+    document.getElementById("ts-btn-skip-pre").disabled = (skipsLeft <= 0);
+    document.getElementById("ts-btn-skip-task").disabled = (skipsLeft <= 0);
 
-  function nextTurn(jokerOpen) {
-    const act = players[pIdx];
-    let cands = players.map((_, i) => i).filter(i => i !== pIdx);
-    rIdx = cands[Math.floor(Math.random() * cands.length)];
-    jQual = false; jBonus = false;
+    document.getElementById("ts-joker-cnt").innerText = jokersLeft;
+    document.getElementById("ts-btn-use-joker").disabled = (jokersLeft <= 0 || jokerActive);
 
-    if (jokerOpen) {
-      const open = KATS.filter(k => act.scores[k] < 3);
-      const chosen = open[Math.floor(Math.random() * open.length)];
-      const pool = getPool(chosen);
-      task = pool[Math.floor(Math.random() * pool.length)];
-      jBonus = true;
-    } else {
-      const pool = getPool(null);
-      task = pool[Math.floor(Math.random() * pool.length)];
-      if (act.scores[task.kategorie] >= 3) jQual = true;
-    }
+    const totalGoal = KATS.length * goalPerCat;
+    const totalDone = KATS.reduce((sum, k) => sum + Math.min(goalPerCat, teamScores[k]), 0);
+    const pct = Math.round((totalDone / totalGoal) * 100);
+    document.getElementById("ts-team-pct").innerText = pct + "%";
+    document.getElementById("ts-team-pts").innerText = `${totalDone}/${totalGoal}`;
+    document.getElementById("ts-prog-bar").style.width = pct + "%";
+  }
+
+  function prepareNextTask() {
+    if (timeUp) return;
+    const pool = getPool();
+    task = pool.at(Math.floor(Math.random() * pool.length));
     used.add(task.id);
+    jokerActive = false;
 
-    document.getElementById("ts-p-act").innerText = act.name;
-    document.getElementById("ts-p-str").innerText = streak;
-    document.getElementById("ts-p-rdr").innerText = players[rIdx].name;
-    document.getElementById("ts-p-hide").innerText = act.name;
+    document.getElementById("ts-next-cat").innerText = task.kategorie;
+    document.getElementById("ts-next-diff").innerText = `Schwierigkeitsstufe: ${task.schwierigkeit.toUpperCase()} • Zeitlimit: ${task.zeit} Sek.`;
 
-    const jm = document.getElementById("ts-j-msg");
-    if (jQual) {
-      jm.style.display = "block";
-      jm.innerText = `★ JOKER-CHANCE! „${task.kategorie}“ ist schon voll (3/3). Löse diese 4. Aufgabe für eine Zufalls-Kategorie!`;
-    } else if (jBonus) {
-      jm.style.display = "block";
-      jm.innerText = `★ JOKER-EINSATZ! Du spielst jetzt um einen Punkt in „${task.kategorie}“!`;
+    const bonusEl = document.getElementById("ts-bonus-hint");
+    if (teamScores[task.kategorie] >= goalPerCat) {
+      bonusEl.style.display = "block";
+      bonusEl.innerText = `★ BONUS-CHANCE: „${task.kategorie}“ ist schon voll (${goalPerCat}/${goalPerCat}). Ein Erfolg füllt eine noch offene Kategorie!`;
     } else {
-      jm.style.display = "none";
+      bonusEl.style.display = "none";
     }
-    renderTable("ts-sb-1");
+
+    const selAct = document.getElementById("ts-sel-act");
+    selAct.innerHTML = "";
+    players.forEach((p, idx) => {
+      if (idx !== lastActorIdx) {
+        const opt = document.createElement("option");
+        opt.value = idx;
+        opt.textContent = `${p.name} (${p.solved} gelöst)`;
+        selAct.appendChild(opt);
+      }
+    });
+    tsSyncReader();
+    updateCounters();
+    renderBoard("ts-sb-1");
     show("ts-s-priv");
   }
 
+  window.tsSyncReader = function() {
+    const chosenAct = parseInt(document.getElementById("ts-sel-act").value);
+    const selRdr = document.getElementById("ts-sel-rdr");
+    selRdr.innerHTML = "";
+    players.forEach((p, idx) => {
+      if (idx !== chosenAct) {
+        const opt = document.createElement("option");
+        opt.value = idx;
+        opt.textContent = p.name;
+        selRdr.appendChild(opt);
+      }
+    });
+  };
+
+  window.tsSkipTask = function() {
+    if (skipsLeft <= 0) return;
+    clearInterval(tInt);
+    tRun = false;
+    skipsLeft--;
+    prepareNextTask();
+  };
+
+  window.tsUseJoker = function() {
+    if (jokersLeft <= 0 || jokerActive) return;
+    jokersLeft--;
+    jokerActive = true;
+    document.getElementById("ts-t-joker").style.display = "inline-block";
+    document.getElementById("ts-t-act").innerText = "ALLE IM TEAM (Joker)";
+    updateCounters();
+  };
+
   window.tsReveal = function() {
-    document.getElementById("ts-t-act").innerText = players[pIdx].name;
-    document.getElementById("ts-t-rdr").innerText = players[rIdx].name;
+    actIdx = parseInt(document.getElementById("ts-sel-act").value);
+    rdrIdx = parseInt(document.getElementById("ts-sel-rdr").value);
+
+    document.getElementById("ts-t-act").innerText = players.at(actIdx).name;
+    document.getElementById("ts-t-rdr").innerText = players.at(rdrIdx).name;
     document.getElementById("ts-t-cat").innerText = task.kategorie;
     document.getElementById("ts-t-meta").innerText = "Stufe: " + task.schwierigkeit.toUpperCase();
     document.getElementById("ts-t-tit").innerText = task.titel;
     document.getElementById("ts-t-dsc").innerText = task.aufgabe;
     document.getElementById("ts-t-sol").innerText = task.loesung;
-    document.getElementById("ts-t-joker").style.display = (jQual || jBonus) ? "inline-block" : "none";
+    document.getElementById("ts-t-joker").style.display = "none";
 
     document.getElementById("ts-b-hnt").style.display = "none";
     document.getElementById("ts-t-hnt").style.display = "none";
@@ -1282,6 +1392,7 @@
     tTot = task.zeit; tLeft = tTot;
     document.getElementById("ts-b-tmr").innerText = "Timer starten";
     updTmr();
+    updateCounters();
     show("ts-s-task");
   };
 
@@ -1314,63 +1425,65 @@
 
   window.tsDone = function(ok) {
     clearInterval(tInt);
-    const act = players[pIdx];
-    if (!ok) { pass(); return; }
+    tRun = false;
+    lastActorIdx = actIdx;
 
-    if (jQual) {
-      if (KATS.some(k => act.scores[k] < 3)) {
-        alert("Joker freigeschaltet! Es folgt sofort eine Zufallsaufgabe aus einer offenen Kategorie.");
-        nextTurn(true);
+    if (ok) {
+      const actor = players.at(actIdx);
+      actor.solved++;
+      actor.byCat[task.kategorie]++;
+
+      if (teamScores[task.kategorie] < goalPerCat) {
+        teamScores[task.kategorie]++;
+      } else {
+        const openCats = KATS.filter(k => teamScores[k] < goalPerCat).sort((a, b) => teamScores[a] - teamScores[b]);
+        if (openCats.length > 0) teamScores[openCats.at(0)]++;
+      }
+
+      if (KATS.every(k => teamScores[k] >= goalPerCat)) {
+        end("Ihr habt alle 8 Kategorien gemeinsam gemeistert!");
         return;
       }
     }
-
-    if (act.scores[task.kategorie] < 3) act.scores[task.kategorie]++;
-    streak++;
-
-    if (KATS.every(k => act.scores[k] >= 3)) {
-      end(`${act.name} hat als Erste/r alle 8 Kategorien mit 3 Punkten erfüllt!`);
-      return;
-    }
-    if (streak >= 3) {
-      alert(`3 Punkte in Folge für ${act.name}! Jetzt wechselt das Spiel zum nächsten Spieler.`);
-      pass();
-    } else {
-      nextTurn(false);
-    }
+    prepareNextTask();
   };
 
-  function pass() {
-    streak = 0; pIdx++;
-    if (pIdx >= players.length) {
-      pIdx = 0;
-      if (finalRnd) { end("Die vereinbarte Spieldauer ist abgelaufen!"); return; }
-    }
-    nextTurn(false);
-  }
-
-  function renderTable(id) {
-    let h = `<table><tr><th>Kategorie</th>${players.map(p => `<th>${p.name}</th>`).join("")}</tr>`;
+  function renderBoard(id) {
+    let h = `<div class="ts-cat-grid">`;
     KATS.forEach(k => {
-      h += `<tr><td>${k}</td>${players.map(p => `<td class="${p.scores[k]>=3?'ts-done':''}">${p.scores[k]}/3</td>`).join("")}</tr>`;
+      const val = Math.min(goalPerCat, teamScores[k]);
+      const isDone = val >= goalPerCat;
+      h += `<div class="ts-cat-box ${isDone ? 'done' : ''}"><span>${k}</span><span>${val}/${goalPerCat} ${isDone ? '✔' : ''}</span></div>`;
     });
-    h += `<tr style="background:#f1f5f9;font-weight:bold;"><td>Gesamt</td>${players.map(p => `<td>${KATS.reduce((s,k)=>s+p.scores[k],0)}/24</td>`).join("")}</tr></table>`;
+    h += `</div>`;
     document.getElementById(id).innerHTML = h;
   }
 
   function end(reason) {
     clearInterval(gInt); clearInterval(tInt);
     document.getElementById("ts-e-rsn").innerText = reason;
-    let rk = players.map(p => ({ n: p.name, t: KATS.reduce((s,k)=>s+p.scores[k],0) })).sort((a,b) => b.t - a.t);
-    let top = rk[0].t;
-    let win = rk.filter(r => r.t === top).map(r => r.n);
-    document.getElementById("ts-e-win").innerText = win.length > 1 ? `Unentschieden: ${win.join(" & ")} (${top} Punkte)` : `Sieger: ${win[0]} mit ${top} von 24 Punkten!`;
-    renderTable("ts-sb-2");
+
+    const totalGoal = KATS.length * goalPerCat;
+    const totalDone = KATS.reduce((sum, k) => sum + Math.min(goalPerCat, teamScores[k]), 0);
+    const pct = Math.round((totalDone / totalGoal) * 100);
+
+    document.getElementById("ts-e-win").innerText = pct >= 100
+      ? `🎉 Gratuliere! Ihr habt das Spiel zu 100 % geschafft (${totalDone}/${totalGoal} Punkte)!`
+      : `👏 Gratuliere! Ihr habt das Spiel zu ${pct} % geschafft (${totalDone} von ${totalGoal} Punkten)!`;
+
+    const sortedByTotal = players.slice().sort((a, b) => b.solved - a.solved);
+    let titlesHtml = `<div style="margin-bottom:8px; font-weight:700; color:#334155;">Eure Team-Beiträge:</div>`;
+    sortedByTotal.forEach((p, i) => {
+      const badge = i === 0 && p.solved > 0 ? "🏆 Team-MVP: " : "⭐ ";
+      titlesHtml += `<span class="ts-title-pill">${badge}${p.name} (${p.solved} Aufgaben)</span>`;
+    });
+    document.getElementById("ts-e-titles").innerHTML = titlesHtml;
+
+    renderBoard("ts-sb-2");
     show("ts-s-end");
   }
 })();
 </script>
 </body>
 </html>
-
 
