@@ -57,8 +57,11 @@
   #gameRoot .ts-sol { background: #ecfdf5; border-left: 4px solid var(--ok); padding: 8px 10px; margin-bottom: 12px; font-size: 0.92rem; }
   #gameRoot .ts-prog-wrap { background: #e2e8f0; border-radius: 999px; height: 12px; overflow: hidden; margin: 6px 0 10px; }
   #gameRoot .ts-prog-bar { background: var(--ok); height: 100%; width: 0%; transition: width 0.35s ease; }
-  #gameRoot .ts-cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 6px; margin-top: 10px; }
-  #gameRoot .ts-cat-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; }
+  #gameRoot .ts-lbl-sub { display: block; font-weight: 500; color: #64748b; font-size: 0.8rem; margin-top: 1px; }
+  #gameRoot .ts-cat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 10px; width: 100%; }
+  #gameRoot .ts-cat-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; gap: 4px; min-width: 0; }
+  #gameRoot .ts-cat-box span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #gameRoot .ts-cat-box span:last-child { flex-shrink: 0; white-space: nowrap; }
   #gameRoot .ts-cat-box.done { background: #d1fae5; border-color: #10b981; color: #065f46; font-weight: 700; }
   #gameRoot .ts-title-pill { display: inline-block; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 5px 10px; border-radius: 20px; font-size: 0.85rem; margin: 3px; font-weight: 600; }
   #ts-rot-warn { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95); color: #fff; z-index: 10000; align-items: center; justify-content: center; text-align: center; padding: 24px; font-size: 1.1rem; font-weight: 700; }
@@ -77,8 +80,9 @@
     #gameRoot .ts-t-title { font-size: 1.08rem; margin: 4px 0; }
     #gameRoot .ts-t-desc { font-size: 0.96rem; margin-bottom: 8px; }
     #gameRoot .ts-tmr { font-size: 1.4rem; padding: 4px; margin-bottom: 8px; }
-    #gameRoot .ts-cat-grid { grid-template-columns: repeat(2, 1fr); gap: 5px; margin-top: 8px; }
-    #gameRoot .ts-cat-box { font-size: 0.76rem; padding: 5px 6px; }
+    #gameRoot .ts-cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; margin-top: 8px; width: 100%; }
+    #gameRoot .ts-cat-box { font-size: 0.71rem; padding: 5px 6px; min-width: 0; }
+
   }
   @media (orientation: landscape) and (max-height: 460px) and (pointer: coarse) {
     #ts-rot-warn { display: flex; }
@@ -110,8 +114,9 @@
   <div id="ts-s-setup" class="ts-scr act">
     <button type="button" id="resumeBtn" class="ts-btn ts-btn-warn ts-blk" style="display:none; margin-bottom:12px;" onclick="tsResume()">&#9654; Laufendes Spiel fortsetzen</button>
     <div class="ts-fg">
-      <label>Team-Mitglieder eintragen (mindestens 2 Personen):</label>
+      <label>Team-Mitglieder eintragen:<span class="ts-lbl-sub">(mindestens 2 Personen)</span></label>
       <div id="ts-p-inputs">
+
         <input type="text" class="ts-p-in" placeholder="Name Mitglied 1...">
         <input type="text" class="ts-p-in" placeholder="Name Mitglied 2...">
       </div>
