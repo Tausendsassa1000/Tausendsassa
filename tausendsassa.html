@@ -5,53 +5,109 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tausendsassa – Das 1000-Aufgaben-Teamspiel</title>
 <style>
-  #ts-app-root {
+  html, body { margin: 0; padding: 0; background: transparent; width: 100%; }
+  #gameRoot {
     --p: #2563eb; --pd: #1d4ed8; --s: #f59e0b; --ok: #10b981; --no: #ef4444; --bg: #f8fafc; --txt: #1e293b;
     box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; color: var(--txt);
-    max-width: 820px; width: 100%; margin: 20px auto; background: #fff; border-radius: 14px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08); padding: 22px; display: block; clear: both; position: relative;
+    max-width: 960px; width: 100%; min-height: 66dvh; margin: 6px auto; background: #fff; border-radius: 16px;
+    border: 1.5px solid #cbd5e1; box-shadow: 0 8px 20px rgba(0,0,0,0.06); padding: 16px;
+    display: block; clear: both; position: relative; touch-action: pan-y; overflow-x: hidden;
   }
-  #ts-app-root *, #ts-app-root *::before, #ts-app-root *::after { box-sizing: border-box; }
-  #ts-app-root .ts-title-main { text-align: center; color: var(--p); margin: 0 0 4px; font-size: clamp(1.45rem, 6vw, 2.25rem); font-weight: 800; letter-spacing: 0.04em; white-space: nowrap; }
-  #ts-app-root .ts-sub { text-align: center; color: #64748b; margin-bottom: 20px; font-size: 0.95rem; }
-  #ts-app-root .ts-scr { display: none; }
-  #ts-app-root .ts-scr.act { display: block; }
-  #ts-app-root .ts-fg { margin-bottom: 14px; }
-  #ts-app-root .ts-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-  #ts-app-root label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--txt); font-size: 0.92rem; }
-  #ts-app-root input, #ts-app-root select { width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; margin-bottom: 8px; background: #fff; color: var(--txt); }
-  #ts-app-root .ts-btn { background: var(--p); color: #fff; border: none; padding: 11px 18px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; display: inline-block; text-align: center; }
-  #ts-app-root .ts-btn:hover { background: var(--pd); }
-  #ts-app-root .ts-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  #ts-app-root .ts-btn-ok { background: var(--ok); }
-  #ts-app-root .ts-btn-no { background: var(--no); }
-  #ts-app-root .ts-btn-sec { background: #e2e8f0; color: var(--txt); }
-  #ts-app-root .ts-btn-warn { background: var(--s); color: #fff; }
-  #ts-app-root .ts-blk { width: 100%; margin-top: 8px; }
-  #ts-app-root .ts-bar { display: flex; justify-content: space-between; align-items: center; background: #f1f5f9; padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; font-size: 0.92rem; }
-  #ts-app-root .ts-bdg { background: var(--p); color: #fff; padding: 4px 9px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; }
-  #ts-app-root .ts-priv { text-align: center; padding: 22px 16px; background: #eff6ff; border: 2px dashed var(--p); border-radius: 12px; margin: 15px 0; }
-  #ts-app-root .ts-card { border: 2px solid #e2e8f0; border-radius: 12px; padding: 18px; background: #fff; }
-  #ts-app-root .ts-t-title { font-size: 1.3rem; font-weight: 700; color: var(--pd); margin: 8px 0; }
-  #ts-app-root .ts-t-desc { font-size: 1.1rem; line-height: 1.5; margin-bottom: 16px; }
-  #ts-app-root .ts-tmr { font-size: 1.8rem; font-weight: 800; text-align: center; padding: 8px; background: #f8fafc; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 12px; }
-  #ts-app-root .ts-tmr.low { color: var(--no); border-color: var(--no); }
-  #ts-app-root .ts-hint { background: #fffbeb; border-left: 4px solid var(--s); padding: 10px; margin-bottom: 12px; display: none; }
-  #ts-app-root .ts-sol { background: #ecfdf5; border-left: 4px solid var(--ok); padding: 10px; margin-bottom: 16px; }
-  #ts-app-root .ts-prog-wrap { background: #e2e8f0; border-radius: 999px; height: 14px; overflow: hidden; margin: 8px 0 14px; }
-  #ts-app-root .ts-prog-bar { background: var(--ok); height: 100%; width: 0%; transition: width 0.35s ease; }
-  #ts-app-root .ts-cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 8px; margin-top: 14px; }
-  #ts-app-root .ts-cat-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
-  #ts-app-root .ts-cat-box.done { background: #d1fae5; border-color: #10b981; color: #065f46; font-weight: 700; }
-  #ts-app-root .ts-title-pill { display: inline-block; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 6px 12px; border-radius: 20px; font-size: 0.88rem; margin: 4px; font-weight: 600; }
+  #gameRoot *, #gameRoot *::before, #gameRoot *::after { box-sizing: border-box; }
+  #gameRoot.fullscreen-play {
+    position: fixed; top: 10px; bottom: 10px; left: 50%; transform: translateX(-50%);
+    max-width: 960px; width: calc(100% - 20px); height: calc(100dvh - 20px); min-height: 0;
+    margin: 0; border-radius: 16px; border: 1.5px solid #cbd5e1; z-index: 9999;
+    overflow-y: auto; display: flex; flex-direction: column;
+  }
+  .ka2-bar { display: flex; justify-content: flex-start; align-items: center; gap: 10px; margin-bottom: 10px; min-height: 32px; flex-wrap: nowrap; }
+  .ka2-top-btn { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; padding: 5px 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .ka2-top-btn:hover { background: #e2e8f0; }
+  .ka2-sel {
+    -webkit-appearance: none; appearance: none; padding-right: 30px;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - 15px) 52%, calc(100% - 10px) 52%;
+    background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
+  }
+  #gameRoot .ts-title-main { text-align: center; color: var(--p); margin: 0 0 4px; font-size: clamp(1.4rem, 5.5vw, 2.2rem); font-weight: 800; letter-spacing: 0.04em; white-space: nowrap; }
+  #gameRoot .ts-sub { text-align: center; color: #64748b; margin-bottom: 14px; font-size: 0.92rem; }
+  #gameRoot .ts-scr { display: none; }
+  #gameRoot .ts-scr.act { display: block; }
+  #gameRoot .ts-fg { margin-bottom: 12px; }
+  #gameRoot .ts-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+  #gameRoot label { display: block; font-weight: 600; margin-bottom: 4px; color: var(--txt); font-size: 0.9rem; }
+  #gameRoot input, #gameRoot select { width: 100%; padding: 9px 10px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 1rem; margin-bottom: 6px; background: #fff; color: var(--txt); }
+=== ENDE ===
+  #gameRoot .ts-btn { background: var(--p); color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-size: 0.96rem; font-weight: 600; cursor: pointer; display: inline-block; text-align: center; }
+  #gameRoot .ts-btn:hover { background: var(--pd); }
+  #gameRoot .ts-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  #gameRoot .ts-btn-ok { background: var(--ok); }
+  #gameRoot .ts-btn-no { background: var(--no); }
+  #gameRoot .ts-btn-sec { background: #e2e8f0; color: var(--txt); }
+  #gameRoot .ts-btn-warn { background: var(--s); color: #fff; }
+  #gameRoot .ts-blk { width: 100%; margin-top: 6px; }
+  #gameRoot .ts-bar { display: flex; justify-content: space-between; align-items: center; background: #f1f5f9; padding: 8px 12px; border-radius: 8px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px; font-size: 0.9rem; }
+  #gameRoot .ts-bdg { background: var(--p); color: #fff; padding: 3px 8px; border-radius: 6px; font-size: 0.82rem; font-weight: bold; white-space: nowrap; }
+  #gameRoot .ts-priv { text-align: center; padding: 14px 12px; background: #eff6ff; border: 1.5px dashed var(--p); border-radius: 12px; margin: 10px 0; }
+  #gameRoot .ts-card { border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px; background: #fff; }
+  #gameRoot .ts-t-title { font-size: 1.2rem; font-weight: 700; color: var(--pd); margin: 6px 0; }
+  #gameRoot .ts-t-desc { font-size: 1.02rem; line-height: 1.45; margin-bottom: 12px; }
+  #gameRoot .ts-tmr { font-size: 1.65rem; font-weight: 800; text-align: center; padding: 6px; background: #f8fafc; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 10px; font-variant-numeric: tabular-nums; }
+  #gameRoot .ts-tmr.low { color: var(--no); border-color: var(--no); }
+  #gameRoot .ts-hint { background: #fffbeb; border-left: 4px solid var(--s); padding: 8px 10px; margin-bottom: 10px; display: none; font-size: 0.92rem; }
+  #gameRoot .ts-sol { background: #ecfdf5; border-left: 4px solid var(--ok); padding: 8px 10px; margin-bottom: 12px; font-size: 0.92rem; }
+  #gameRoot .ts-prog-wrap { background: #e2e8f0; border-radius: 999px; height: 12px; overflow: hidden; margin: 6px 0 10px; }
+  #gameRoot .ts-prog-bar { background: var(--ok); height: 100%; width: 0%; transition: width 0.35s ease; }
+  #gameRoot .ts-cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 6px; margin-top: 10px; }
+  #gameRoot .ts-cat-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; }
+  #gameRoot .ts-cat-box.done { background: #d1fae5; border-color: #10b981; color: #065f46; font-weight: 700; }
+  #gameRoot .ts-title-pill { display: inline-block; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 5px 10px; border-radius: 20px; font-size: 0.85rem; margin: 3px; font-weight: 600; }
+  #ts-rot-warn { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95); color: #fff; z-index: 10000; align-items: center; justify-content: center; text-align: center; padding: 24px; font-size: 1.1rem; font-weight: 700; }
+  @media (max-width: 600px) {
+    #gameRoot { min-height: auto; margin: 2px auto; padding: 8px 10px; border-radius: 12px; }
+    #gameRoot.fullscreen-play {
+      top: 0; bottom: 0; left: 0; transform: none; width: 100%; max-width: 100%; height: 100dvh;
+      border-radius: 0; border: none; padding: 8px 10px;
+    }
+    #gameRoot input, #gameRoot select { font-size: 16px; padding: 8px 10px; }
+    #gameRoot .ts-grid2 { grid-template-columns: 1fr; gap: 6px; }
+    #gameRoot .ts-priv { padding: 10px 8px; margin: 6px 0; }
+    #gameRoot .ts-card { padding: 10px; }
+    #gameRoot .ts-t-title { font-size: 1.08rem; margin: 4px 0; }
+    #gameRoot .ts-t-desc { font-size: 0.96rem; margin-bottom: 8px; }
+    #gameRoot .ts-tmr { font-size: 1.4rem; padding: 4px; margin-bottom: 8px; }
+    #gameRoot .ts-cat-grid { grid-template-columns: repeat(2, 1fr); gap: 5px; margin-top: 8px; }
+    #gameRoot .ts-cat-box { font-size: 0.76rem; padding: 5px 6px; }
+  }
+  @media (orientation: landscape) and (max-height: 460px) and (pointer: coarse) {
+    #ts-rot-warn { display: flex; }
+  }
 </style>
+=== ENDE ===
 </head>
 <body>
-<div id="ts-app-root">
+<div id="ts-rot-warn">Bitte drehe dein Smartphone ins Hochformat.</div>
+<div id="gameRoot">
+  <div class="ka2-bar">
+    <svg width="44" height="19" viewBox="0 0 220 95" aria-label="KA2 Logo" style="display:block; flex-shrink:0; border-radius:50%; overflow:hidden; background:#4f4f4f;">
+      <rect x="42" y="0" width="52" height="95" fill="#0068b7"/>
+      <polygon points="42,50 86,95 42,95" fill="#00b4ed"/>
+      <polygon points="88,28 122,74 88,74" fill="#39a935"/>
+      <rect x="88" y="74" width="54" height="21" fill="#ffed00"/>
+      <polygon points="62,0 185,0 185,74 118,74" fill="#e30613"/>
+      <polygon points="164,0 185,0 185,74 176,74" fill="#ea5b0c"/>
+      <polygon points="142,74 185,74 172,95 142,95" fill="#e6007e"/>
+      <path d="M36,0 H47 V45 L88,0 H103 L61,46 L104,95 H89 L47,48 V95 H36 Z" fill="#2d2d2d"/>
+      <path d="M111,0 H123 L156,95 H144 L136,72 H98 L90,95 H78 Z M102,62 H132 L117,17 Z" fill="#2d2d2d"/>
+      <path d="M138,26 C138,10 150,2 164,2 C178,2 187,11 187,25 C187,39 177,48 161,61 L148,72 H187 V83 H134 V73 L153,56 C168,43 175,36 175,25 C175,17 170,12 163,12 C155,12 150,18 150,27 Z" fill="#2d2d2d"/>
+    </svg>
+    <button type="button" id="exitFsBtn" class="ka2-top-btn" style="display:none;" onclick="tsExitFs()">&#10005; Menü</button>
+  </div>
   <div class="ts-title-main">TAUSENDSASSA</div>
   <div class="ts-sub">8 Kategorien &bull; Gemeinsam als Team</div>
   <!-- 1. SETUP SCREEN -->
   <div id="ts-s-setup" class="ts-scr act">
+    <button type="button" id="resumeBtn" class="ts-btn ts-btn-warn ts-blk" style="display:none; margin-bottom:12px;" onclick="tsResume()">&#9654; Laufendes Spiel fortsetzen</button>
     <div class="ts-fg">
       <label>Team-Mitglieder eintragen (mindestens 2 Personen):</label>
       <div id="ts-p-inputs">
@@ -64,7 +120,7 @@
     <div class="ts-grid2">
       <div class="ts-fg">
         <label>Team-Ziel pro Kategorie:</label>
-        <select id="ts-goal">
+        <select id="ts-goal" class="ka2-sel">
           <option value="2">2 Punkte pro Kategorie (16 Gesamt)</option>
           <option value="3" selected>3 Punkte pro Kategorie (24 Gesamt)</option>
           <option value="4">4 Punkte pro Kategorie (32 Gesamt)</option>
@@ -73,7 +129,7 @@
       </div>
       <div class="ts-fg">
         <label>Gesamt-Spieldauer:</label>
-        <select id="ts-dur">
+        <select id="ts-dur" class="ka2-sel">
           <option value="0">Ohne Zeitlimit (Bis 100 % erreicht sind)</option>
           <option value="15">15 Minuten</option>
           <option value="30" selected>30 Minuten</option>
@@ -83,7 +139,7 @@
       </div>
       <div class="ts-fg">
         <label>Schwierigkeitsgrad:</label>
-        <select id="ts-diff">
+        <select id="ts-diff" class="ka2-sel">
           <option value="alle" selected>Gemischt (Alle Stufen)</option>
           <option value="leicht">Leicht</option>
           <option value="mittel">Mittel</option>
@@ -92,7 +148,7 @@
       </div>
       <div class="ts-fg">
         <label>Aufgaben überspringen (Veto):</label>
-        <select id="ts-skips">
+        <select id="ts-skips" class="ka2-sel">
           <option value="0">Nicht erlaubt (0x)</option>
           <option value="3">3x pro Spiel</option>
           <option value="5" selected>5x pro Spiel</option>
@@ -102,7 +158,7 @@
       </div>
       <div class="ts-fg">
         <label>Team-Joker (Gemeinsam lösen):</label>
-        <select id="ts-jokers">
+        <select id="ts-jokers" class="ka2-sel">
           <option value="0">Keine Joker (0x)</option>
           <option value="1">1x pro Spiel</option>
           <option value="2" selected>2x pro Spiel</option>
@@ -111,9 +167,11 @@
         </select>
       </div>
     </div>
-    <div id="ts-status" style="font-weight:600; margin-bottom:12px; color:#64748b;">Initialisiere...</div>
+    <div id="ts-err" style="display:none; color:#dc2626; font-weight:600; margin-bottom:8px; font-size:0.9rem;"></div>
+    <div id="ts-status" style="font-weight:600; margin-bottom:10px; color:#64748b;">Initialisiere...</div>
     <button type="button" class="ts-btn ts-btn-ok ts-blk" onclick="tsStart()">Team-Mission starten</button>
   </div>
+=== ENDE ===
   <!-- 2. TEAM-BERATUNG & ROLLENWAHL -->
   <div id="ts-s-priv" class="ts-scr">
     <div class="ts-bar">
@@ -130,20 +188,20 @@
 
       <p style="margin:0 0 12px; font-size:0.95rem;">Beratet euch kurz: <strong>Wer übernimmt diese Aufgabe?</strong><br><span style="font-size:0.82rem; color:#64748b;">(Fair-Play: Niemand darf zweimal direkt hintereinander antreten)</span></p>
 
-      <div class="ts-grid2" style="text-align:left; max-width:520px; margin:0 auto 14px;">
+      <div class="ts-grid2" style="text-align:left; max-width:520px; margin:0 auto 10px;">
         <div>
           <label for="ts-sel-act">Ausführende Person:</label>
-          <select id="ts-sel-act" onchange="tsSyncReader()"></select>
+          <select id="ts-sel-act" class="ka2-sel" onchange="tsSyncReader()"></select>
         </div>
         <div>
           <label for="ts-sel-rdr">Vorleser/in (darf lesen):</label>
-          <select id="ts-sel-rdr"></select>
+          <select id="ts-sel-rdr" class="ka2-sel"></select>
         </div>
       </div>
 
-      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
         <button type="button" class="ts-btn" onclick="tsReveal()">Aufgabe an Vorleser/in zeigen</button>
-        <button type="button" class="ts-btn ts-btn-sec" id="ts-btn-skip-pre" onclick="tsSkipTask()">⏭ Überspringen (<span id="ts-skip-cnt-1">5</span>)</button>
+        <button type="button" class="ts-btn ts-btn-sec" id="ts-btn-skip-pre" onclick="tsSkipTask()">&#8634; Überspringen (<span id="ts-skip-cnt-1">5</span>)</button>
       </div>
     </div>
 
@@ -161,8 +219,8 @@
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
         <span style="font-size:0.85rem; color:#64748b;" id="ts-t-meta"></span>
         <div style="display:flex; gap:6px;">
-          <button type="button" class="ts-btn ts-btn-warn" id="ts-btn-use-joker" style="padding:6px 12px; font-size:0.85rem;" onclick="tsUseJoker()">★ Team-Joker (<span id="ts-joker-cnt">2</span>)</button>
-          <button type="button" class="ts-btn ts-btn-sec" id="ts-btn-skip-task" style="padding:6px 12px; font-size:0.85rem;" onclick="tsSkipTask()">⏭ Überspringen (<span id="ts-skip-cnt-2">5</span>)</button>
+          <button type="button" class="ts-btn ts-btn-warn" id="ts-btn-use-joker" style="padding:6px 10px; font-size:0.84rem;" onclick="tsUseJoker()">&#9733; Team-Joker (<span id="ts-joker-cnt">2</span>)</button>
+          <button type="button" class="ts-btn ts-btn-sec" id="ts-btn-skip-task" style="padding:6px 10px; font-size:0.84rem;" onclick="tsSkipTask()">&#8634; Überspringen (<span id="ts-skip-cnt-2">5</span>)</button>
         </div>
       </div>
 
@@ -170,7 +228,7 @@
       <div class="ts-t-desc" id="ts-t-dsc"></div>
       <div class="ts-tmr" id="ts-t-tmr">00:45</div>
 
-      <div style="text-align:center; margin-bottom:12px;">
+      <div style="text-align:center; margin-bottom:10px;">
         <button type="button" class="ts-btn ts-btn-sec" id="ts-b-tmr" onclick="tsTglTmr()">Timer starten</button>
         <button type="button" class="ts-btn ts-btn-warn" id="ts-b-hnt" style="display:none;" onclick="tsShowHnt()">Halbzeit-Empfehlung</button>
       </div>
@@ -178,30 +236,32 @@
       <div class="ts-hint" id="ts-t-hnt"></div>
       <div class="ts-sol"><strong>Lösung / Kriterium:</strong> <span id="ts-t-sol"></span></div>
 
-      <div style="display:flex; gap:10px;">
-        <button type="button" class="ts-btn ts-btn-ok" style="flex:1;" onclick="tsDone(true)">✔ Im Team erfüllt</button>
-        <button type="button" class="ts-btn ts-btn-no" style="flex:1;" onclick="tsDone(false)">✖ Leider nicht geschafft</button>
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="ts-btn ts-btn-ok" style="flex:1;" onclick="tsDone(true)">&#10003; Im Team erfüllt</button>
+        <button type="button" class="ts-btn ts-btn-no" style="flex:1;" onclick="tsDone(false)">&#10005; Leider nicht geschafft</button>
       </div>
     </div>
   </div>
 
   <!-- 4. TEAM-AUSWERTUNG -->
   <div id="ts-s-end" class="ts-scr">
-    <div style="text-align:center; color:var(--p); font-size:1.6rem; font-weight:800; margin-bottom:8px;">Team-Auswertung</div>
-    <p id="ts-e-rsn" style="text-align:center; color:#475569; margin-bottom:14px;"></p>
-    <div id="ts-e-win" style="background:#ecfdf5; border:2px solid var(--ok); color:#065f46; padding:18px; border-radius:12px; text-align:center; font-weight:800; font-size:1.25rem; margin-bottom:16px;"></div>
-    <div id="ts-e-titles" style="text-align:center; margin-bottom:16px;"></div>
+    <div style="text-align:center; color:var(--p); font-size:1.5rem; font-weight:800; margin-bottom:6px;">Team-Auswertung</div>
+    <p id="ts-e-rsn" style="text-align:center; color:#475569; margin-bottom:12px;"></p>
+    <div id="ts-e-win" style="background:#ecfdf5; border:2px solid var(--ok); color:#065f46; padding:14px; border-radius:12px; text-align:center; font-weight:800; font-size:1.15rem; margin-bottom:14px;"></div>
+    <div id="ts-e-titles" style="text-align:center; margin-bottom:14px;"></div>
     <div id="ts-sb-2"></div>
-    <button type="button" class="ts-btn ts-blk" style="margin-top:16px;" onclick="location.reload()">Neue Team-Mission</button>
+    <button type="button" class="ts-btn ts-blk" style="margin-top:14px;" onclick="tsResetMenu()">Neue Team-Mission</button>
   </div>
+=== ENDE ===
 </div>
 <script>
 (function() {
-  const KATS = [
+  const KATS = Array.of(
     "Geist & Wissen", "Geschicklichkeit", "Körper & Balance", "Ausdruck & Kreativität",
     "Sinne & Wahrnehmung", "Alltag & Life-Skills", "Soziales & Kommunikation", "Chaos & Mutproben"
-  ];
+  );
   const RAW_DB = [
+=== ENDE ===
   [0,"leicht",30,"Zahlenreihe","Welche Zahl folgt: 2, 6, 12, 20, 30, ...?","Schau auf die Abstände zwischen den Zahlen.","42 (+4, +6, +8, +10, +12)."],
   [0,"leicht",20,"Roter Planet","Welcher Planet heisst wegen seines Staubs 'Roter Planet'?","Der vierte Planet von der Sonne.","Mars."],
   [0,"mittel",45,"Golfball-Bus","Wie viele Golfbälle passen ungefähr in einen Schulbus?","Schätze erst Kartons, dann Bälle pro Karton.","Ca. 500.000 (Toleranz: 350.000–650.000)."],
@@ -1215,55 +1275,101 @@
     loesung: r.at(6)
   }));
 
-  let players = [], lastActorIdx = -1, actIdx = 0, rdrIdx = 0, used = new Set();
+  let players = new Array(), lastActorIdx = -1, actIdx = 0, rdrIdx = 0, used = new Set();
   let goalPerCat = 3, skipsLeft = 5, jokersLeft = 2, jokerActive = false;
   let teamScores = {};
   let diff = "alle", gSec = 0, gInt = null, timeUp = false;
   let task = null, tTot = 45, tLeft = 45, tInt = null, tRun = false;
+  let activeScreen = "ts-s-priv", gameActive = false;
 
-  document.getElementById("ts-status").innerHTML = `<span style="color:var(--ok);">✔ ${DB.length} Aufgaben geladen (Koop-Teammodus bereit).</span>`;
+  const root = document.getElementById("gameRoot");
+  const anchor = document.createComment("ka2-anchor");
+  if (root && root.parentNode) root.parentNode.insertBefore(anchor, root);
+
+  function enterFs() {
+    if (!root) return;
+    if (root.parentNode !== document.body) document.body.appendChild(root);
+    root.classList.add("fullscreen-play");
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    window.scrollTo(0, 0);
+    document.getElementById("exitFsBtn").style.display = "inline-block";
+    document.getElementById("resumeBtn").style.display = "none";
+  }
+
+  window.tsExitFs = function() {
+    if (!root) return;
+    root.classList.remove("fullscreen-play");
+    document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+    if (anchor.parentNode) anchor.parentNode.insertBefore(root, anchor.nextSibling);
+    document.getElementById("exitFsBtn").style.display = "none";
+    document.getElementById("resumeBtn").style.display = gameActive ? "block" : "none";
+    show("ts-s-setup");
+  };
+
+  window.tsResume = function() {
+    if (!gameActive) return;
+    enterFs();
+    show(activeScreen);
+  };
+
+  window.tsResetMenu = function() {
+    clearInterval(gInt); clearInterval(tInt);
+    tRun = false; gameActive = false;
+    tsExitFs();
+  };
+
+  document.getElementById("ts-status").innerHTML = `<span style="color:var(--ok);">&#10003; ${DB.length} Aufgaben geladen (Koop-Teammodus bereit).</span>`;
 
   window.tsAddField = function() {
     const div = document.getElementById("ts-p-inputs");
     const inp = document.createElement("input");
-    inp.type = "text";
-    inp.className = "ts-p-in";
+    inp.type = "text"; inp.className = "ts-p-in";
     inp.placeholder = `Name Mitglied ${div.children.length + 1}...`;
     div.appendChild(inp);
   };
 
   function show(id) {
-    document.querySelectorAll("#ts-app-root .ts-scr").forEach(e => e.classList.remove("act"));
+    if (id !== "ts-s-setup") activeScreen = id;
+    document.querySelectorAll("#gameRoot .ts-scr").forEach(e => e.classList.remove("act"));
     document.getElementById(id).classList.add("act");
+    if (root) root.scrollTop = 0;
   }
 
   window.tsStart = function() {
-    const names = Array.from(document.querySelectorAll("#ts-app-root .ts-p-in")).map(i => i.value.trim()).filter(v => v !== "");
-    if (names.length < 2) { alert("Bitte mindestens 2 Team-Mitglieder eintragen!"); return; }
+    const errEl = document.getElementById("ts-err");
+    const names = Array.from(document.querySelectorAll("#gameRoot .ts-p-in")).map(i => i.value.trim()).filter(v => v !== "");
+    if (names.length < 2) {
+      errEl.innerText = "Bitte mindestens 2 Team-Mitglieder eintragen.";
+      errEl.style.display = "block";
+      return;
+    }
+    errEl.style.display = "none";
 
     players = names.map(n => ({ name: n, solved: 0, byCat: {} }));
     KATS.forEach(k => {
-      teamScores[k] = 0;
-      players.forEach(p => { p.byCat[k] = 0; });
+      Reflect.set(teamScores, k, 0);
+      players.forEach(p => { Reflect.set(p.byCat, k, 0); });
     });
 
     goalPerCat = parseInt(document.getElementById("ts-goal").value) || 3;
     diff = document.getElementById("ts-diff").value;
     skipsLeft = parseInt(document.getElementById("ts-skips").value);
     jokersLeft = parseInt(document.getElementById("ts-jokers").value);
-    lastActorIdx = -1;
-    timeUp = false;
+    lastActorIdx = -1; timeUp = false; gameActive = true;
 
+    clearInterval(gInt);
     const m = parseInt(document.getElementById("ts-dur").value);
     if (m > 0) {
       gSec = m * 60;
+      document.getElementById("ts-g-tmr").innerText = `${String(Math.floor(gSec/60)).padStart(2,'0')}:${String(gSec%60).padStart(2,'0')}`;
       gInt = setInterval(() => {
         gSec--;
         if (gSec > 0) {
           document.getElementById("ts-g-tmr").innerText = `${String(Math.floor(gSec/60)).padStart(2,'0')}:${String(gSec%60).padStart(2,'0')}`;
         } else {
-          clearInterval(gInt);
-          timeUp = true;
+          clearInterval(gInt); timeUp = true;
           end("Die vereinbarte Missionszeit ist abgelaufen!");
         }
       }, 1000);
@@ -1271,8 +1377,10 @@
       document.getElementById("ts-g-tmr").innerText = "Unbegrenzt";
     }
 
+    enterFs();
     prepareNextTask();
   };
+=== ENDE ===
 
   function getPool() {
     let pool = DB.filter(t => !used.has(t.id));
@@ -1280,7 +1388,7 @@
       const dp = pool.filter(t => t.schwierigkeit === diff);
       if (dp.length > 0) pool = dp;
     }
-    const openCats = KATS.filter(k => teamScores[k] < goalPerCat);
+    const openCats = KATS.filter(k => Reflect.get(teamScores, k) < goalPerCat);
     if (openCats.length > 0 && Math.random() < 0.75) {
       const cp = pool.filter(t => openCats.includes(t.kategorie));
       if (cp.length > 0) pool = cp;
@@ -1288,6 +1396,7 @@
     if (pool.length === 0) { used.clear(); return getPool(); }
     return pool;
   }
+
   function updateCounters() {
     const skipTxt = skipsLeft > 500 ? "∞" : skipsLeft;
     document.getElementById("ts-skip-cnt-1").innerText = skipTxt;
@@ -1299,7 +1408,7 @@
     document.getElementById("ts-btn-use-joker").disabled = (jokersLeft <= 0 || jokerActive);
 
     const totalGoal = KATS.length * goalPerCat;
-    const totalDone = KATS.reduce((sum, k) => sum + Math.min(goalPerCat, teamScores[k]), 0);
+    const totalDone = KATS.reduce((sum, k) => sum + Math.min(goalPerCat, Reflect.get(teamScores, k)), 0);
     const pct = Math.round((totalDone / totalGoal) * 100);
     document.getElementById("ts-team-pct").innerText = pct + "%";
     document.getElementById("ts-team-pts").innerText = `${totalDone}/${totalGoal}`;
@@ -1317,12 +1426,13 @@
     document.getElementById("ts-next-diff").innerText = `Schwierigkeitsstufe: ${task.schwierigkeit.toUpperCase()} • Zeitlimit: ${task.zeit} Sek.`;
 
     const bonusEl = document.getElementById("ts-bonus-hint");
-    if (teamScores[task.kategorie] >= goalPerCat) {
+    if (Reflect.get(teamScores, task.kategorie) >= goalPerCat) {
       bonusEl.style.display = "block";
       bonusEl.innerText = `★ BONUS-CHANCE: „${task.kategorie}“ ist schon voll (${goalPerCat}/${goalPerCat}). Ein Erfolg füllt eine noch offene Kategorie!`;
     } else {
       bonusEl.style.display = "none";
     }
+=== ENDE ===
 
     const selAct = document.getElementById("ts-sel-act");
     selAct.innerHTML = "";
@@ -1431,16 +1541,20 @@
     if (ok) {
       const actor = players.at(actIdx);
       actor.solved++;
-      actor.byCat[task.kategorie]++;
+      Reflect.set(actor.byCat, task.kategorie, (Reflect.get(actor.byCat, task.kategorie) || 0) + 1);
 
-      if (teamScores[task.kategorie] < goalPerCat) {
-        teamScores[task.kategorie]++;
+      const curScore = Reflect.get(teamScores, task.kategorie);
+      if (curScore < goalPerCat) {
+        Reflect.set(teamScores, task.kategorie, curScore + 1);
       } else {
-        const openCats = KATS.filter(k => teamScores[k] < goalPerCat).sort((a, b) => teamScores[a] - teamScores[b]);
-        if (openCats.length > 0) teamScores[openCats.at(0)]++;
+        const openCats = KATS.filter(k => Reflect.get(teamScores, k) < goalPerCat).sort((a, b) => Reflect.get(teamScores, a) - Reflect.get(teamScores, b));
+        if (openCats.length > 0) {
+          const targetCat = openCats.at(0);
+          Reflect.set(teamScores, targetCat, Reflect.get(teamScores, targetCat) + 1);
+        }
       }
 
-      if (KATS.every(k => teamScores[k] >= goalPerCat)) {
+      if (KATS.every(k => Reflect.get(teamScores, k) >= goalPerCat)) {
         end("Ihr habt alle 8 Kategorien gemeinsam gemeistert!");
         return;
       }
@@ -1451,9 +1565,9 @@
   function renderBoard(id) {
     let h = `<div class="ts-cat-grid">`;
     KATS.forEach(k => {
-      const val = Math.min(goalPerCat, teamScores[k]);
+      const val = Math.min(goalPerCat, Reflect.get(teamScores, k));
       const isDone = val >= goalPerCat;
-      h += `<div class="ts-cat-box ${isDone ? 'done' : ''}"><span>${k}</span><span>${val}/${goalPerCat} ${isDone ? '✔' : ''}</span></div>`;
+      h += `<div class="ts-cat-box ${isDone ? 'done' : ''}"><span>${k}</span><span>${val}/${goalPerCat} ${isDone ? '&#10003;' : ''}</span></div>`;
     });
     h += `</div>`;
     document.getElementById(id).innerHTML = h;
@@ -1461,20 +1575,21 @@
 
   function end(reason) {
     clearInterval(gInt); clearInterval(tInt);
+    gameActive = false;
     document.getElementById("ts-e-rsn").innerText = reason;
 
     const totalGoal = KATS.length * goalPerCat;
-    const totalDone = KATS.reduce((sum, k) => sum + Math.min(goalPerCat, teamScores[k]), 0);
+    const totalDone = KATS.reduce((sum, k) => sum + Math.min(goalPerCat, Reflect.get(teamScores, k)), 0);
     const pct = Math.round((totalDone / totalGoal) * 100);
 
     document.getElementById("ts-e-win").innerText = pct >= 100
-      ? `🎉 Gratuliere! Ihr habt das Spiel zu 100 % geschafft (${totalDone}/${totalGoal} Punkte)!`
-      : `👏 Gratuliere! Ihr habt das Spiel zu ${pct} % geschafft (${totalDone} von ${totalGoal} Punkten)!`;
+      ? `★ Gratuliere! Ihr habt das Spiel zu 100 % geschafft (${totalDone}/${totalGoal} Punkte)!`
+      : `★ Gratuliere! Ihr habt das Spiel zu ${pct} % geschafft (${totalDone} von ${totalGoal} Punkten)!`;
 
     const sortedByTotal = players.slice().sort((a, b) => b.solved - a.solved);
     let titlesHtml = `<div style="margin-bottom:8px; font-weight:700; color:#334155;">Eure Team-Beiträge:</div>`;
     sortedByTotal.forEach((p, i) => {
-      const badge = i === 0 && p.solved > 0 ? "🏆 Team-MVP: " : "⭐ ";
+      const badge = i === 0 && p.solved > 0 ? "★ Team-MVP: " : "● ";
       titlesHtml += `<span class="ts-title-pill">${badge}${p.name} (${p.solved} Aufgaben)</span>`;
     });
     document.getElementById("ts-e-titles").innerHTML = titlesHtml;
@@ -1482,8 +1597,8 @@
     renderBoard("ts-sb-2");
     show("ts-s-end");
   }
+=== ENDE ===
 })();
 </script>
 </body>
 </html>
-
