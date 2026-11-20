@@ -30,12 +30,12 @@
     background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
   }
   #gameRoot .ts-title-main { text-align: center; color: var(--p); margin: 0 0 4px; font-size: clamp(1.4rem, 5.5vw, 2.2rem); font-weight: 800; letter-spacing: 0.04em; white-space: nowrap; }
-  #gameRoot .ts-sub { text-align: center; color: #64748b; margin-bottom: 14px; font-size: 0.92rem; }
+  #gameRoot .ts-sub { text-align: center; color: #64748b; margin-bottom: 14px; font-size: 0.92rem; line-height: 1.35; }
   #gameRoot .ts-scr { display: none; }
   #gameRoot .ts-scr.act { display: block; }
   #gameRoot .ts-fg { margin-bottom: 12px; }
-  #gameRoot .ts-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
-  #gameRoot label { display: block; font-weight: 600; margin-bottom: 4px; color: var(--txt); font-size: 0.9rem; }
+  #gameRoot .ts-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 10px; }
+  #gameRoot label { display: block; font-weight: 600; margin-bottom: 4px; color: var(--txt); font-size: 0.83rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   #gameRoot input, #gameRoot select { width: 100%; padding: 9px 10px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 1rem; margin-bottom: 6px; background: #fff; color: var(--txt); }
   #gameRoot .ts-btn { background: var(--p); color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-size: 0.96rem; font-weight: 600; cursor: pointer; display: inline-block; text-align: center; }
   #gameRoot .ts-btn:hover { background: var(--pd); }
@@ -64,6 +64,8 @@
   #ts-rot-warn { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95); color: #fff; z-index: 10000; align-items: center; justify-content: center; text-align: center; padding: 24px; font-size: 1.1rem; font-weight: 700; }
   @media (max-width: 600px) {
     #gameRoot { min-height: auto; margin: 2px auto; padding: 8px 10px; border-radius: 12px; }
+    #gameRoot .ts-sub-sep { display: none; }
+    #gameRoot .ts-sub-line { display: block; }
     #gameRoot.fullscreen-play {
       top: 0; bottom: 0; left: 0; transform: none; width: 100%; max-width: 100%; height: 100dvh;
       border-radius: 0; border: none; padding: 8px 10px;
@@ -103,7 +105,7 @@
     <button type="button" id="exitFsBtn" class="ka2-top-btn" style="display:none;" onclick="tsExitFs()">&#10005; Menü</button>
   </div>
   <div class="ts-title-main">TAUSENDSASSA</div>
-  <div class="ts-sub">8 Kategorien &bull; Gemeinsam als Team</div>
+  <div class="ts-sub"><span>8 Kategorien</span><span class="ts-sub-sep"> &bull; </span><span class="ts-sub-line">gemeinsam als Team</span></div>
   <!-- 1. SETUP SCREEN -->
   <div id="ts-s-setup" class="ts-scr act">
     <button type="button" id="resumeBtn" class="ts-btn ts-btn-warn ts-blk" style="display:none; margin-bottom:12px;" onclick="tsResume()">&#9654; Laufendes Spiel fortsetzen</button>
@@ -120,12 +122,13 @@
       <div class="ts-fg">
         <label>Team-Ziel pro Kategorie:</label>
         <select id="ts-goal" class="ka2-sel">
-          <option value="2">2 Punkte pro Kategorie (16 Gesamt)</option>
-          <option value="3" selected>3 Punkte pro Kategorie (24 Gesamt)</option>
-          <option value="4">4 Punkte pro Kategorie (32 Gesamt)</option>
-          <option value="5">5 Punkte pro Kategorie (40 Gesamt)</option>
+          <option value="2">2 Punkte pro Kategorie</option>
+          <option value="3" selected>3 Punkte pro Kategorie</option>
+          <option value="4">4 Punkte pro Kategorie</option>
+          <option value="5">5 Punkte pro Kategorie</option>
         </select>
       </div>
+
       <div class="ts-fg">
         <label>Gesamt-Spieldauer:</label>
         <select id="ts-dur" class="ka2-sel">
